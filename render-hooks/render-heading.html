@@ -1,0 +1,13 @@
+<!--
+    This file is used as a render hook in order to improve the rendering of markdown headings
+
+    to-do: customize based on heading style
+    to-do: Add index to heading
+-->
+
+<h{{ .Level }} id="{{ .Anchor | safeURL }}">
+    <a href="#{{ .Anchor | safeURL }}" title='"{{ .Text | safeHTML }}"'>
+        <span class="anchor-link">[link]</span>
+    </a>
+    {{ .Text | safeHTML }}
+</h{{ .Level }}>
