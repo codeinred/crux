@@ -5,9 +5,24 @@
     to-do: Add index to heading
 -->
 
+{{ if not (.Page.Scratch.Get "heading") }}
+    {{ .Page.Scratch.Set "heading" (slice 0 0 0 0 0 0) }}
+{{ end }}
+
+{{ $index := sub .Level 1 }}
+{{ $count := .Page.Scratch.Get "heading" }}
+{{ $value := add (index $count $index) 1 }}
+{{ $count = first $index $count | append $value }}
+{{ .Page.Scratch.Set "heading" $count }}
+{{ $headingIndex := delimit $count "." }}
+{{ if eq .Level 1 }}
+    {{ $headingIndex = print $headingIndex "." }}
+{{ end }}
+
 <h{{ .Level }} id="{{ .Anchor | safeURL }}">
-    <a href="#{{ .Anchor | safeURL }}" title='"{{ .Text | safeHTML }}"'>
-        <span class="anchor-link">[link]</span>
-    </a>
     {{ .Text | safeHTML }}
+    <a
+        href="#{{ .Anchor | safeURL }}"
+        title='"{{ .Text | safeHTML }}"'
+        class="anchor-link">{{ $headingIndex }}</a>
 </h{{ .Level }}>
